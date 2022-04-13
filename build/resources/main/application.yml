@@ -1,5 +1,0 @@
-bot:
-  BOT_TOKEN: ${BOT_TOKEN}
-  BOT_USERNAME: ${BOT_USERNAME}
-server:
-  PORT: 5000
