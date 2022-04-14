@@ -31,18 +31,33 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         String command = update.getMessage().getText();
 
-        if (command.equals("/hello")) {
-            String message = "Hello, World!";
-
-            SendMessage response = new SendMessage();
-            response.setChatId(update.getMessage().getChatId().toString());
-            response.setText(message);
+        if (command.equals("/start") || command.equals("/help") || command.equals("/commands")) {
+            String helpMessage
+                    = "Here's what BJJT Badass Bot can do!\n\n/start /help /commands : Displays this message!\n" +
+                    "/hello : Says a greeting!";
 
             try {
-                execute(response);
+                execute(createTextMessage(update, helpMessage));
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
         }
+
+        if (command.equals("/hello")) {
+            String greeting = "Hello, " + update.getMessage().getFrom().getFirstName() + "!";
+
+            try {
+                execute(createTextMessage(update, greeting));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private SendMessage createTextMessage(Update update, String message) {
+        SendMessage response = new SendMessage();
+        response.setChatId(update.getMessage().getChatId().toString());
+        response.setText(message);
+        return response;
     }
 }
