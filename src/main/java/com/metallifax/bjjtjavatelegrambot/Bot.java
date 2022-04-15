@@ -29,6 +29,18 @@ public class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        if (update.getMessage().getNewChatMembers() != null) {
+            var members = update.getMessage().getNewChatMembers();
+            String message = "A new member " + members.get(members.size() - 1).getFirstName() + " joined the group!\n" +
+                    "Say hello to them!";
+
+            try {
+                execute(createTextMessage(update, message));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+
         String command = update.getMessage().getText();
 
         if (command.equals("/start") || command.equals("/help") || command.equals("/commands")) {
